@@ -1,0 +1,4 @@
+<resources>
+    <!--spacing-->
+    <dimen name="space_10dp">10dp</dimen>
+</resources>
