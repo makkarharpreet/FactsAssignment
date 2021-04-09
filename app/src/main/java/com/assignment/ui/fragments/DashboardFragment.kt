@@ -128,7 +128,7 @@ class DashboardFragment :
      * this function will be called on swipe down refresh
      */
     override fun onRefresh() {
-        fetchDataFromApi()
+            fetchDataFromApi()
     }
 
 }
