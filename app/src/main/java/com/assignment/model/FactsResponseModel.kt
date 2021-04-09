@@ -12,10 +12,10 @@ data class FactsResponseModel(
 {
     data class Rows(
         @SerializedName("title")
-        val title: String,
+        val title: String?,
         @SerializedName("description")
-        val description: String,
+        val description: String?,
         @SerializedName("imageHref")
-        val imageHref: String
+        val imageHref: String?
     )
 }

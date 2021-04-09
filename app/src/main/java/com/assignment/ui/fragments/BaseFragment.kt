@@ -1,6 +1,7 @@
 package com.assignment.ui.fragments
 
 import android.app.ActionBar
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.assignment.data.api.RetrofitBuilder
 import com.assignment.data.repository.BaseRepository
+import com.assignment.room.DatabaseBuilder
+import com.assignment.room.DatabaseHelper
+import com.assignment.room.DatabaseHelperImpl
 import com.assignment.ui.activities.MainActivity
 import com.assignment.viewmodels.ViewModelFactory
 
@@ -19,6 +23,13 @@ abstract class BaseFragment<VM : ViewModel, B : ViewDataBinding, R : BaseReposit
     protected lateinit var binding : B
     protected lateinit var viewModel: VM
     protected val remoteDataSource = RetrofitBuilder()
+    protected lateinit var  dbHelper : DatabaseHelper
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        dbHelper = DatabaseHelperImpl(DatabaseBuilder.getInstance(context))
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,7 +40,7 @@ abstract class BaseFragment<VM : ViewModel, B : ViewDataBinding, R : BaseReposit
 
         binding = getFragmentBinding(inflater, container) as B
 
-        val factory = ViewModelFactory(getFragmentRepository())
+        val factory = ViewModelFactory(getFragmentRepository(),dbHelper)
         viewModel = ViewModelProvider(this, factory).get(getViewModel())
 
         return binding.root
