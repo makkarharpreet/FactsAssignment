@@ -8,10 +8,10 @@ import kotlinx.coroutines.Dispatchers
 
 class FactsViewModel (private val dashboardRepository: FactsRepository) : ViewModel() {
 
-    fun factsApi(url: String) = liveData(Dispatchers.IO) {
+    fun factsApi() = liveData(Dispatchers.IO) {
         emit(Resource.Loading)
         try {
-            emit(Resource.Success(dashboardRepository.factsApi(url)))
+            emit(Resource.Success(dashboardRepository.factsApi()))
         } catch (exception: Exception) {
             emit(Resource.Failure(true, null,null))
         }
