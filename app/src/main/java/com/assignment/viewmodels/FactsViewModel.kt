@@ -11,9 +11,14 @@ import com.assignment.room.FactsModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * @author Harpreet Singh
+ */
+
 class FactsViewModel (private val dashboardRepository: FactsRepository,private val dbHelper : DatabaseHelper) : ViewModel() {
     lateinit var factsList: LiveData<MutableList<FactsModel>>
 
+    //fetching data from api and emit the response with the sealed class cases
     fun factsApi() = liveData(Dispatchers.IO) {
         emit(Resource.Loading)
         try {
@@ -23,6 +28,7 @@ class FactsViewModel (private val dashboardRepository: FactsRepository,private v
         }
     }
 
+    //fetching all the saved facts in the local database
     fun fetchFacts() {
         viewModelScope.launch {
             try {
@@ -33,6 +39,7 @@ class FactsViewModel (private val dashboardRepository: FactsRepository,private v
         }
     }
 
+    //insert all updated values in the local database
     fun insert(facts: List<FactsModel>) {
         viewModelScope.launch {
             try {
@@ -43,6 +50,7 @@ class FactsViewModel (private val dashboardRepository: FactsRepository,private v
         }
     }
 
+    // it will clear all the saved data in the local database
     fun clearAll() = viewModelScope.launch {
         val noOfRowsDeleted = dbHelper.deleteAll()
     }

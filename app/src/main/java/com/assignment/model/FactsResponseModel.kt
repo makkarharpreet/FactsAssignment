@@ -2,6 +2,9 @@ package com.assignment.model
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * @author Harpreet Singh
+ */
 data class FactsResponseModel(
     @SerializedName("title")
     val title: String,

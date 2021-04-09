@@ -6,8 +6,13 @@ import androidx.databinding.DataBindingUtil
 import com.assignment.R
 import com.assignment.databinding.ActivityMainBinding
 
+/**
+ * @author Harpreet Singh
+ */
 class MainActivity : AppCompatActivity() {
-
+    /**
+     * @param savedInstanceState
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)

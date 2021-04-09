@@ -6,6 +6,9 @@ import com.assignment.data.repository.BaseRepository
 import com.assignment.data.repository.FactsRepository
 import com.assignment.room.DatabaseHelper
 
+/**
+ * @author Harpreet Singh
+ */
 class ViewModelFactory(private val repository: BaseRepository,private val dbHelper : DatabaseHelper) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.assignment.model.FactsResponseModel
 
+/**
+ * @author Harpreet Singh
+ */
 @Dao
 interface FactsDao {
     @Query("SELECT * FROM facts_table")

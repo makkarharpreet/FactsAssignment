@@ -3,6 +3,10 @@ package com.assignment.room
 import android.content.Context
 import androidx.room.Room
 
+/**
+ * @author Harpreet Singh
+ * this class is used to create database and get instance of the database
+ */
 object DatabaseBuilder {
     private var INSTANCE: AppDatabase? = null
 

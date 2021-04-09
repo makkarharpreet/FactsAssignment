@@ -3,6 +3,9 @@ package com.assignment.room
 import androidx.lifecycle.LiveData
 import com.assignment.model.FactsResponseModel
 
+/**
+ * @author Harpreet Singh
+ */
 class DatabaseHelperImpl(private val appDatabase: AppDatabase) : DatabaseHelper {
 
     override suspend fun getFacts(): LiveData<MutableList<FactsModel>> = appDatabase.factsDao().getAll()

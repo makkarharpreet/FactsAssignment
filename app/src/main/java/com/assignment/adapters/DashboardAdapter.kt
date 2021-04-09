@@ -8,7 +8,9 @@ import com.assignment.databinding.DashboardAdapterItemBinding
 import com.assignment.model.FactsResponseModel
 import com.assignment.utility.Utility.loadImage
 
-
+/**
+ * @author Harpreet Singh
+ */
 class DashboardAdapter(
     private val context: Context,
     private var list: List<FactsResponseModel.Rows>
@@ -29,6 +31,9 @@ class DashboardAdapter(
         holder.dashboardAdapterItemBinding.description.text = list[position].description
     }
 
+    /**
+     * this inner class is created to bind the adapter item
+     */
     inner class ViewHolder(var dashboardAdapterItemBinding: DashboardAdapterItemBinding) :
         RecyclerView.ViewHolder(dashboardAdapterItemBinding.root)
 }

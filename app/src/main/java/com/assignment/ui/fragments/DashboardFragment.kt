@@ -1,14 +1,13 @@
 package com.assignment.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.assignment.R
 import com.assignment.data.api.ApiService
 import com.assignment.data.network.Resource
@@ -17,20 +16,22 @@ import com.assignment.databinding.FragmentDashboardBinding
 import com.assignment.model.FactsResponseModel
 import com.assignment.viewmodels.FactsViewModel
 import com.assignment.adapters.DashboardAdapter
-import com.assignment.room.DatabaseBuilder
-import com.assignment.room.DatabaseHelperImpl
 import com.assignment.room.FactsModel
+import com.assignment.utility.Utility.isNetworkAvailable
+import com.assignment.utility.Utility.showErrorMsg
 
 /**
- * @author Harpreet
+ * @author Harpreet Singh
  */
 class DashboardFragment :
-    BaseFragment<FactsViewModel, FragmentDashboardBinding, FactsRepository>() {
-    private var list = mutableListOf<FactsResponseModel.Rows>()
+    BaseFragment<FactsViewModel, FragmentDashboardBinding, FactsRepository>(),
+    SwipeRefreshLayout.OnRefreshListener {
+    private var factsList = mutableListOf<FactsResponseModel.Rows>()
     private lateinit var dashboardAdapter: DashboardAdapter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        binding.swipeRefreshLayout.setOnRefreshListener(this)
         getFactsData()
     }
 
@@ -48,23 +49,29 @@ class DashboardFragment :
     }
 
     private fun getFactsData() {
+        // fetching data from database, if not available then fetch from api
         viewModel.fetchFacts()
         viewModel.factsList.observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
-                list.clear()
+                factsList.clear()
                 for (item in it) {
+                    //adding item in facts list and call adapter
                     val model =
                         FactsResponseModel.Rows(item.title, item.description, item.imageHref)
-                    list.add(model)
+                    factsList.add(model)
                 }
                 callAdapter()
             } else {
-                fetchDataFromApi()
+                if (isNetworkAvailable(context))
+                    fetchDataFromApi()
+                else
+                    view?.showErrorMsg(getString(R.string.no_data))
             }
         })
     }
 
     private fun fetchDataFromApi() {
+        binding.swipeRefreshLayout.isRefreshing = false
         viewModel.factsApi().observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Loading -> {
@@ -72,8 +79,11 @@ class DashboardFragment :
                 }
                 is Resource.Success -> {
                     setProgressVisibility(View.GONE)
+                    //setting action bar title
                     getActionBar()?.title = it.value.title
-                    list = it.value.rows.toMutableList()
+                    //assign rows values to the facts list and call adapter
+                    //save these facts to the local database
+                    factsList = it.value.rows.toMutableList()
                     callAdapter()
                     saveDataToDataBase()
                 }
@@ -84,23 +94,41 @@ class DashboardFragment :
 
     private fun saveDataToDataBase() {
         var myList: MutableList<FactsModel> = mutableListOf<FactsModel>()
+        //clear the previous values stored in the database
         viewModel.clearAll()
-        for (item in list) {
+        for (item in factsList) {
             val model = FactsModel(0, item.title, item.description, item.imageHref)
             myList.add(model)
         }
+        //adding updated values to the database
         viewModel.insert(myList)
     }
 
     private fun callAdapter() {
-        dashboardAdapter = DashboardAdapter(
-            requireContext(), list
-        )
-        binding.recyclerView.adapter = dashboardAdapter
+        //show error message if fact list is empty, otherwise call adapter
+        if (factsList.isEmpty()) {
+            view?.showErrorMsg(getString(R.string.no_data))
+        } else {
+            dashboardAdapter = DashboardAdapter(
+                requireContext(), factsList
+            )
+            binding.recyclerView.adapter = dashboardAdapter
+        }
     }
 
+    /**
+     * this will set the progress bar visibility
+     * @param visibility
+     */
     private fun setProgressVisibility(visibility: Int) {
         binding.progress.visibility = visibility
+    }
+
+    /**
+     * this function will be called on swipe down refresh
+     */
+    override fun onRefresh() {
+        fetchDataFromApi()
     }
 
 }

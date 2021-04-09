@@ -6,6 +6,10 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * @author Harpreet Singh
+ * this class is used to create retrofit instance
+ */
 class RetrofitBuilder {
 
     private  val baseUrl = "https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/"
