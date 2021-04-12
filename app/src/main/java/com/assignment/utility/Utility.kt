@@ -20,8 +20,7 @@ object Utility {
      * this method is used to load Images in ImageView
      */
     fun ImageView.loadImage(url: String?) {
-        Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true).into(this)
+        Glide.with(context).load(url).into(this)
     }
 
     /**

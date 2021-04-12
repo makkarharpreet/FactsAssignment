@@ -71,7 +71,6 @@ class DashboardFragment :
     }
 
     private fun fetchDataFromApi() {
-        binding.swipeRefreshLayout.isRefreshing = false
         viewModel.factsApi().observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Loading -> {
@@ -128,7 +127,11 @@ class DashboardFragment :
      * this function will be called on swipe down refresh
      */
     override fun onRefresh() {
+        binding.swipeRefreshLayout.isRefreshing = false
+        if (isNetworkAvailable(context))
             fetchDataFromApi()
+        else
+            viewModel.fetchFacts()
     }
 
 }

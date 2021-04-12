@@ -10,6 +10,7 @@ import com.assignment.room.DatabaseHelper
 import com.assignment.room.FactsModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.IllegalStateException
 
 /**
  * @author Harpreet Singh
@@ -35,6 +36,7 @@ class FactsViewModel (private val dashboardRepository: FactsRepository,private v
                 factsList = dbHelper.getFacts()
             } catch (e: IllegalStateException) {
                 // handler error
+
             }
         }
     }
@@ -45,7 +47,7 @@ class FactsViewModel (private val dashboardRepository: FactsRepository,private v
             try {
             dbHelper.insertAll(facts)
             } catch (e: IllegalStateException) {
-
+                // handler error
             }
         }
     }
