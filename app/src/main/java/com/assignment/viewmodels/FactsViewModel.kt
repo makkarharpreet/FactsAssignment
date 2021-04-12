@@ -23,7 +23,7 @@ class FactsViewModel (private val dashboardRepository: FactsRepository,private v
         emit(Resource.Loading)
         try {
             emit(Resource.Success(dashboardRepository.factsApi()))
-        } catch (exception: Exception) {
+        } catch (exception: IllegalStateException) {
             emit(Resource.Failure(true, null,null))
         }
     }
@@ -33,7 +33,7 @@ class FactsViewModel (private val dashboardRepository: FactsRepository,private v
         viewModelScope.launch {
             try {
                 factsList = dbHelper.getFacts()
-            } catch (e: Exception) {
+            } catch (e: IllegalStateException) {
                 // handler error
             }
         }
@@ -44,14 +44,14 @@ class FactsViewModel (private val dashboardRepository: FactsRepository,private v
         viewModelScope.launch {
             try {
             dbHelper.insertAll(facts)
-            } catch (e: Exception) {
-                // handler error
+            } catch (e: IllegalStateException) {
+
             }
         }
     }
 
     // it will clear all the saved data in the local database
     fun clearAll() = viewModelScope.launch {
-        val noOfRowsDeleted = dbHelper.deleteAll()
+        dbHelper.deleteAll()
     }
 }
