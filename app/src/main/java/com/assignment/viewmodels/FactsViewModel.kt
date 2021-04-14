@@ -15,7 +15,6 @@ import java.lang.IllegalStateException
 /**
  * @author Harpreet Singh
  */
-
 class FactsViewModel (private val dashboardRepository: FactsRepository,private val dbHelper : DatabaseHelper) : ViewModel() {
     lateinit var factsList: LiveData<MutableList<FactsModel>>
 
