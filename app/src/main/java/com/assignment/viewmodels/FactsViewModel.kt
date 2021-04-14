@@ -15,7 +15,8 @@ import java.lang.IllegalStateException
 /**
  * @author Harpreet Singh
  */
-class FactsViewModel (private val dashboardRepository: FactsRepository,private val dbHelper : DatabaseHelper) : ViewModel() {
+
+open class FactsViewModel (private val dashboardRepository: FactsRepository,private val dbHelper : DatabaseHelper) : ViewModel() {
     lateinit var factsList: LiveData<MutableList<FactsModel>>
 
     //fetching data from api and emit the response with the sealed class cases
