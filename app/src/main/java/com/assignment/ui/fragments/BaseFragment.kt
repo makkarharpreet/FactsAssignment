@@ -24,8 +24,8 @@ import com.assignment.viewmodels.ViewModelFactory
  */
 abstract class BaseFragment<VM : ViewModel, B : ViewDataBinding, R : BaseRepository> : Fragment(){
 
-    protected lateinit var binding : B
-    protected lateinit var viewModel: VM
+    lateinit var binding : B
+    lateinit var viewModel: VM
     protected val remoteDataSource = RetrofitBuilder()
     private lateinit var  dbHelper : DatabaseHelper
 

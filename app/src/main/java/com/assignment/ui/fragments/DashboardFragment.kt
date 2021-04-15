@@ -23,10 +23,10 @@ import com.assignment.utility.Utility.showErrorMsg
 /**
  * @author Harpreet Singh
  */
-class DashboardFragment :
+open class DashboardFragment :
     BaseFragment<FactsViewModel, FragmentDashboardBinding, FactsRepository>(),
     SwipeRefreshLayout.OnRefreshListener {
-    private var factsList = mutableListOf<FactsResponseModel.Rows>()
+    var factsList = mutableListOf<FactsResponseModel.Rows>()
     private lateinit var dashboardAdapter: DashboardAdapter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -70,7 +70,7 @@ class DashboardFragment :
         })
     }
 
-    private fun fetchDataFromApi() {
+    fun fetchDataFromApi() {
         viewModel.factsApi().observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Loading -> {
@@ -103,7 +103,7 @@ class DashboardFragment :
         viewModel.insert(myList)
     }
 
-    private fun callAdapter() {
+    fun callAdapter() {
         //show error message if fact list is empty, otherwise call adapter
         if (factsList.isEmpty()) {
             view?.showErrorMsg(getString(R.string.no_data))
