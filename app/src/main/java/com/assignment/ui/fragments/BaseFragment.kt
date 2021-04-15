@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
@@ -24,7 +25,9 @@ import com.assignment.viewmodels.ViewModelFactory
  */
 abstract class BaseFragment<VM : ViewModel, B : ViewDataBinding, R : BaseRepository> : Fragment(){
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     lateinit var binding : B
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     lateinit var viewModel: VM
     protected val remoteDataSource = RetrofitBuilder()
     private lateinit var  dbHelper : DatabaseHelper

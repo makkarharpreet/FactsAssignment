@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
@@ -26,6 +27,8 @@ import com.assignment.utility.Utility.showErrorMsg
 open class DashboardFragment :
     BaseFragment<FactsViewModel, FragmentDashboardBinding, FactsRepository>(),
     SwipeRefreshLayout.OnRefreshListener {
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     var factsList = mutableListOf<FactsResponseModel.Rows>()
     private lateinit var dashboardAdapter: DashboardAdapter
 
@@ -48,6 +51,7 @@ open class DashboardFragment :
         return FactsRepository(remoteDataSource.buildApi(ApiService::class.java))
     }
 
+    @VisibleForTesting
     private fun getFactsData() {
         // fetching data from database, if not available then fetch from api
         viewModel.fetchFacts()
@@ -70,7 +74,7 @@ open class DashboardFragment :
         })
     }
 
-    fun fetchDataFromApi() {
+    private fun fetchDataFromApi() {
         viewModel.factsApi().observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Loading -> {
@@ -103,6 +107,7 @@ open class DashboardFragment :
         viewModel.insert(myList)
     }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun callAdapter() {
         //show error message if fact list is empty, otherwise call adapter
         if (factsList.isEmpty()) {
