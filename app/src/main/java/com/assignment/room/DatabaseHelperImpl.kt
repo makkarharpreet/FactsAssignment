@@ -1,7 +1,6 @@
 package com.assignment.room
 
 import androidx.lifecycle.LiveData
-import com.assignment.model.FactsResponseModel
 
 /**
  * @author Harpreet Singh
