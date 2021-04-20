@@ -30,7 +30,8 @@ open class DashboardFragment :
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     var factsList = mutableListOf<FactsResponseModel.Rows>()
-    private lateinit var dashboardAdapter: DashboardAdapter
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    lateinit var dashboardAdapter: DashboardAdapter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
